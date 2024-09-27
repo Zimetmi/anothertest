@@ -5,17 +5,15 @@
 }
 
 body {
-	background-color: #b5afab;
 	margin: 0;
 	font-family: Helvetica, sans-serif;
-	height: 100%; 
-	background-attachment: fixed;
-	margin: 0;
 	padding: 0;
-}
-
-.content {
-	max-width: 100%;
+	background-image: url(icons/background.jpg);
+	background-repeat: no-repeat; 
+    background-size: cover; 
+    background-attachment: fixed; 
+    background-position: center;
+	width: 100%;
 }
 		
 /* Убираем подчёркивание  ссылок*/ 
@@ -40,46 +38,32 @@ img {
 	display: flex;
 }
 
-/*Поля для выставления оценок жюри*/
-#inputFields {
-	margin-left: auto;
-	margin-right: auto;
-	display:flex;
-	padding-bottom: 1.5em;
-	justify-content: center;
-	font-size:16px;
-}
-	
-.data-input {
-	font-size: 16px;
-}
-
-select {
-	width: 4em;
-	line-height: 1.3;
-	margin: 0;
-	border: 2px solid #aaa;
-	font-size: 16px;
-	padding: 10px;
-	margin-bottom: 10px;
+.thumbnail {
+            max-height: 700px;
+            width: auto;
+        }
+		
+.tyan {
+    position: fixed; /* Фиксируем изображение на экране */
+	bottom: 0%; /* Центрируем по вертикали */
+    left: 50%; /* Центрируем по горизонтали */
+    transform: translateX(-50%); /* Корректируем центрирование */
+    width: auto; /* Ширина автоматически подстраивается */
+    max-width: 100%; /* Ограничиваем максимальную ширину */
+    max-height: 100%; /* Ограничиваем максимальную высоту */
+    z-index: -1; /* Размещаем изображение под другими элементами */
 }
 
-textarea {
-	width: 14em;
-	height: 4em; 
-	font-size: 16px;
-	padding: 10px;
-	margin-bottom: 10px;
-	border: 2px solid #aaa;
+@media (max-width: 768px) {
+    .tyan {
+        height: auto; /* Автоматическая высота на мобильных устройствах */
+        width: 100%; /* Ширина 100% экрана */
+        max-height: none; /* Отменяем ограничение высоты */
+        bottom: 0%; /* Центрируем по вертикали */
+        left: 50%; /* Центрируем по горизонтали */
+        transform: translateX(-50%); /* Корректируем центрирование */
+    }
 }
-
-.input-row {
-	font-size: 1.4em;
-	margin-left: 0.7em;
-	margin-right:0.7em;
-	text-align: center;
-}
-
 
 /*СТАРЫЕ СТИЛИ. Сохранил на случай, если что-то отвалится*/
 
@@ -94,12 +78,11 @@ textarea {
 .table_blur td {border: 1px solid #e3eef7; padding: 15px 20px; position: relative; transition: all 0.5s ease;}*/
 
 
-/*Для картинок на заднем плане. Для Анимау не нужен
-.muzhik{position: fixed; bottom: 0; height:70%;  width:auto; right:5%;}
-.tyan{position: fixed;  bottom: 0; height:70%; width:auto; right:-2%;}*/
+
 
 /*Для текста "СМОТР В 11:50 на вкладках. Для анимау может быть не нужно.
 h3 {color: white;}*/
 
 /*body {background-image: url("Background.jpg"); background-size: cover; background-repeat: no-repeat; background-attachment: fixed; margin: 0; font-family: Helvetica, sans-serif; background-color:#495e66;}*/
 /*.background-container {width: 100%; height: 100vh; /* 100% высоты viewport */ /*background-image: url('path/to/your/image.jpg');  background-size: cover;  background-position: center; background-repeat: no-repeat;}*/
+

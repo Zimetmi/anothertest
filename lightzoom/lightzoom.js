@@ -232,3 +232,20 @@
  		};
 
  } )( jQuery, window, document );
+
+
+//lightzoom для активации в расписании
+document.addEventListener('DOMContentLoaded', function() {
+    const initializeLightzoom = () => {
+        const lightzoomElements = document.querySelectorAll('a[data-lightzoom]');
+        lightzoomElements.forEach(element => {
+            $(element).lightzoom({speed: 400, overlayOpacity: 0.5}); // Инициализация lightzoom с параметрами
+        });
+    };
+
+    initializeLightzoom();
+
+    document.addEventListener('tableUpdated', function() {
+        initializeLightzoom();
+    });
+});

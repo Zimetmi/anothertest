@@ -245,7 +245,7 @@ function createInputFields(container, rowId, placeholders, options = []) {
 
 
 	async function getSheetId() {
-		const url = 'https://script.google.com/macros/s/AKfycbwUU6sZ8rsg2oilDLkubnl0pbWV_8-3bJWIVDxQVS3Z4nYHMTnmj4mXOzf1j8D8ld4T/exec'; 
+		const url = 'https://script.google.com/macros/s/AKfycbxemxyuf8cFQCnr1joWtAzRqhIyfeTCU2OU19RrWac57c0HuANTdNRb7i21iVEr9yNQ/exec'; 
 		const response = await fetch(url);
 		return response.text();
 	}
@@ -253,8 +253,8 @@ function createInputFields(container, rowId, placeholders, options = []) {
     // Функция для загрузки данных из Google Sheets с кешированием
     async function fetchDataWithCache(sheetName = 'lis', includeParticipants = false) {
         const SHEET_ID = await getSheetId(); // Получаем ID динамически
-        const API_KEY = 'AIzaSyBj2W1tUafEz-lBa8CIwiILl28XlmAhyFM'; // Замените YOUR_API_KEY на ваш ключ API
-        const RANGE = 'A1:L150';
+        const API_KEY = 'AIzaSyCYgExuxs0Kme9-tWRCsz4gVD9yRjHY74g'; // Замените YOUR_API_KEY на ваш ключ API
+        const RANGE = 'A1:L200';
         const CACHE_EXPIRY = 120000; // 2 минуты в миллисекундах
         const cacheKey = `cachedData_${sheetName}`;
         const cacheTimeKey = `cachedTime_${sheetName}`;
@@ -404,7 +404,7 @@ function saveData(value, column, row, sheetName = 'lis') {
         // console.log('Интернет доступен, пробуем отправить данные...');
         sendDataToServer(cacheKey);
     } else {
-        console.warn('Интернет недоступен, данные сохранены в кеш.');
+     //   console.warn('Интернет недоступен, данные сохранены в кеш.');
     }
 }
 
@@ -412,12 +412,12 @@ function saveData(value, column, row, sheetName = 'lis') {
 async function sendDataToServer(cacheKey) {
     const cachedData = localStorage.getItem(cacheKey);
     if (!cachedData) {
-        console.error(`Нет данных в кеше для ключа: ${cacheKey}`);
+    //    console.error(`Нет данных в кеше для ключа: ${cacheKey}`);
         return;
     }
 
     const { value, column, row, sheet } = JSON.parse(cachedData);
-    const url = 'https://script.google.com/macros/s/AKfycbyAXgt-Q1wikBmbkxVUJ-oqKlG4sIXcVMUt40M2GYx4y_s2b5fFvT0V0LaCXn1sSfPwBA/exec';
+    const url = 'https://script.google.com/macros/s/AKfycbyL42-wZJRFqnqcL50UYmPykIIYLMeK4ajMwssTodupbuXqw7-7b0atbyJkqyXTaZj4/exec';
     const params = new URLSearchParams({
         column: column,
         row: row,
@@ -431,13 +431,13 @@ async function sendDataToServer(cacheKey) {
         const response = await fetch(`${url}?${params.toString()}`, { method: 'GET' });
 
         if (response.ok) {
-           // console.log(`Данные успешно отправлены для ключа ${cacheKey}`);
+     //       console.log(`Данные успешно отправлены для ключа ${cacheKey}`);
             localStorage.removeItem(cacheKey); // Удаляем из кеша при успешной отправке
         } else {
-           // console.error(`Ошибка отправки данных на сервер для ключа ${cacheKey}: ${response.statusText}`);
+     //       console.error(`Ошибка отправки данных на сервер для ключа ${cacheKey}: ${response.statusText}`);
         }
     } catch (error) {
-       // console.error('Ошибка сети при отправке данных:', error);
+     //   console.error('Ошибка сети при отправке данных:', error);
     }
 }
 

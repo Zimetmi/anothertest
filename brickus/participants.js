@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-//Функция дебаунсинга. Для задержки сохранения комментария, чтобы не терять данные
+	//Функция дебаунсинга. Для задержки сохранения комментария, чтобы не терять данные
 	function debounce(func, wait) {
 		let timeout;
 		return function(...args) {
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         select.addEventListener('input', function () {
-            saveData(select.value, dataColumn, dataRow, 'brickusDay2');
+            saveData(select.value, dataColumn, dataRow, 'brickus');
         });
 
         return select;
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     select.addEventListener('input', function () {
-        saveData(select.value, dataColumn, dataRow, 'brickusDay2');
+        saveData(select.value, dataColumn, dataRow, 'brickus');
     });
 
     return select;
@@ -103,9 +103,9 @@ function createCheckbox(id, dataColumn, dataRow, initialValue) {
 
     checkbox.addEventListener('change', function () {
         if (checkbox.checked) {
-            saveData('Номинант', dataColumn, dataRow, 'brickusDay2');
+            saveData('Номинант', dataColumn, dataRow, 'brickus');
         } else {
-            saveData('', dataColumn, dataRow, 'brickusDay2');
+            saveData('', dataColumn, dataRow, 'brickus');
         }
     });
 
@@ -116,10 +116,10 @@ function createCheckbox(id, dataColumn, dataRow, initialValue) {
 //Функция создания полей ввода
 function createInputFields(container, rowId, placeholders, options = []) {
     const parameters = [
-        { label: 'Соответствие', column: 'C', placeholder: placeholders['costum'] },
-        { label: 'Качество костюма', column: 'D', placeholder: placeholders['shozhest'] },
-        { label: 'Выход', column: 'E', placeholder: placeholders['vistup'] },
-        { label: 'Аксессуары', column: 'F', placeholder: placeholders['dropdown'] }
+        { label: 'Костюм', column: 'C', placeholder: placeholders['costum'] },
+        { label: 'Схожесть', column: 'D', placeholder: placeholders['shozhest'] },
+        { label: 'Выход', column: 'E', placeholder: placeholders['vistup'] }
+//        { label: 'Аксессуары', column: 'F', placeholder: placeholders['dropdown'] }
     ];
 
     const inputContainer = document.createElement('div');
@@ -159,7 +159,7 @@ function createInputFields(container, rowId, placeholders, options = []) {
     textarea.value = placeholders['comment'] || ''; // Инициализируем значение из placeholders
 
     textarea.addEventListener('input', debounce(function () {
-    saveData(this.value, 'G', rowId, 'brickusDay2');
+    saveData(this.value, 'F', rowId, 'brickus');
 	}, 300));  // Задержка 300 мс
 
     commentInputDiv.appendChild(textarea);
@@ -170,8 +170,8 @@ function createInputFields(container, rowId, placeholders, options = []) {
     const checkboxContainer = document.createElement('div');
     checkboxContainer.className = 'checkbox-container';
 
-    const checkboxLabels = ['Пошив', 'Крафт', 'Парик', 'Выступление'];
-    const checkboxColumns = ['I', 'J', 'K', 'L'];
+    const checkboxLabels = ['Пошив', 'Крафт', 'Дефиле', 'Парик', 'Гран-при'];
+    const checkboxColumns = ['H', 'I', 'J', 'K', 'L'];
 
     checkboxLabels.forEach((label, index) => {
         const checkboxRow = document.createElement('div');
@@ -243,12 +243,19 @@ function createInputFields(container, rowId, placeholders, options = []) {
         });
     }
 
+
+	async function getSheetId() {
+		const url = 'https://script.google.com/macros/s/AKfycbxemxyuf8cFQCnr1joWtAzRqhIyfeTCU2OU19RrWac57c0HuANTdNRb7i21iVEr9yNQ/exec'; 
+		const response = await fetch(url);
+		return response.text();
+	}
+
     // Функция для загрузки данных из Google Sheets с кешированием
-    async function fetchDataWithCache(sheetName = 'brickusDay2', includeParticipants = false) {
-        const SHEET_ID = '128bnCwot_ifFV_B5e1Zxi4VrMLIzGyV4X9iBe7JMJMk';
-        const API_KEY = 'AIzaSyBj2W1tUafEz-lBa8CIwiILl28XlmAhyFM'; // Замените YOUR_API_KEY на ваш ключ API
-        const RANGE = 'A1:L150';
-        const CACHE_EXPIRY = 420000; // 7 минут в миллисекундах
+    async function fetchDataWithCache(sheetName = 'brickus', includeParticipants = false) {
+        const SHEET_ID = await getSheetId(); // Получаем ID динамически
+        const API_KEY = 'AIzaSyCYgExuxs0Kme9-tWRCsz4gVD9yRjHY74g'; // Замените YOUR_API_KEY на ваш ключ API
+        const RANGE = 'A1:L200';
+        const CACHE_EXPIRY = 120000; // 2 минуты в миллисекундах
         const cacheKey = `cachedData_${sheetName}`;
         const cacheTimeKey = `cachedTime_${sheetName}`;
 
@@ -297,19 +304,19 @@ function createInputFields(container, rowId, placeholders, options = []) {
 			'costum': row[2] || '',      // Значение для соответствия (столбец C)
 			'shozhest': row[3] || '',    // Значение для качества костюма (столбец D)
 			'vistup': row[4] || '',      // Значение для аксессуаров (столбец E)
-			'comment': row[6] || '',     // Значение для комментария (столбец G)
-			'dropdown': row[5] || '',   // Значение для выпадающего списка (столбец F, новый)
+			'comment': row[5] || '',     // Значение для комментария (столбец F)
 			'checkboxes': [
-				row[8] || '',   // Значение для чекбокса 1 (столбец I)
-				row[9] || '',   // Значение для чекбокса 2 (столбец J)
-				row[10] || '',  // Значение для чекбокса 3 (столбец K)
-				row[11] || ''   // Значение для чекбокса 4 (столбец L)	
+				row[7] || '',   // Значение для чекбокса 1 (столбец H)
+				row[8] || '',   // Значение для чекбокса 2 (столбец I)
+				row[9] || '',  // Значение для чекбокса 3 (столбец J)
+				row[10] || '',   // Значение для чекбокса 4 (столбец K)	
+				row[11] || ''   // Значение для чекбокса 5 (столбец L)	
 			]
 		};
 	}
 
     // Функция для отображения данных
-    async function renderData(sheetName = 'brickusDay2') {
+    async function renderData(sheetName = 'brickus') {
         const { data, participants } = await fetchDataWithCache(sheetName, true);
         
         const section1Container = document.getElementById('section1');
@@ -377,36 +384,96 @@ function createInputFields(container, rowId, placeholders, options = []) {
 
  
 
-// Функция для сохранения данных
-async function saveData(value, column, row, sheetName = 'brickusDay2') {
-    const url = 'https://script.google.com/macros/s/AKfycbyAXgt-Q1wikBmbkxVUJ-oqKlG4sIXcVMUt40M2GYx4y_s2b5fFvT0V0LaCXn1sSfPwBA/exec';
+// Функция для сохранения данных в кеш
+function saveData(value, column, row, sheetName = 'brickus') {
+    const cacheKey = `unsavedData_${row}_${column}`;
+    
+    // Логируем данные, которые сохраняем в кеш
+    // console.log(`Сохраняем данные в кеш: ${value}, row: ${row}, column: ${column}, sheet: ${sheetName}`);
+    
+    // Сохраняем данные в локальное хранилище
+    localStorage.setItem(cacheKey, JSON.stringify({
+        value: value,
+        column: column,
+        row: row,
+        sheet: sheetName
+    }));
+    
+    // Попытка отправить данные на сервер, если интернет есть
+    if (navigator.onLine) {
+        // console.log('Интернет доступен, пробуем отправить данные...');
+        sendDataToServer(cacheKey);
+    } else {
+     //   console.warn('Интернет недоступен, данные сохранены в кеш.');
+    }
+}
+
+// Функция отправки данных на сервер
+async function sendDataToServer(cacheKey) {
+    const cachedData = localStorage.getItem(cacheKey);
+    if (!cachedData) {
+    //    console.error(`Нет данных в кеше для ключа: ${cacheKey}`);
+        return;
+    }
+
+    const { value, column, row, sheet } = JSON.parse(cachedData);
+    const url = 'https://script.google.com/macros/s/AKfycbyL42-wZJRFqnqcL50UYmPykIIYLMeK4ajMwssTodupbuXqw7-7b0atbyJkqyXTaZj4/exec';
     const params = new URLSearchParams({
         column: column,
         row: row,
         value: value,
-        sheet: sheetName
+        sheet: sheet
     });
+
+    // console.log(`Отправляем данные на сервер: ${params.toString()}`);
 
     try {
         const response = await fetch(`${url}?${params.toString()}`, { method: 'GET' });
-        // Проверяем, что ответ в формате JSON, иначе обрабатываем как текст
-        if (response.headers.get('content-type')?.includes('application/json')) {
-            const data = await response.json();
-            console.log('Data saved:', data); // Пример вывода для проверки
+
+        if (response.ok) {
+     //       console.log(`Данные успешно отправлены для ключа ${cacheKey}`);
+            localStorage.removeItem(cacheKey); // Удаляем из кеша при успешной отправке
         } else {
-            const text = await response.text();
-            console.log('Response text:', text); // Вывод текстового ответа
+     //       console.error(`Ошибка отправки данных на сервер для ключа ${cacheKey}: ${response.statusText}`);
         }
     } catch (error) {
-        console.error('Error saving data:', error);
+     //   console.error('Ошибка сети при отправке данных:', error);
     }
 }
+
+// Функция для отправки всех кешированных данных
+async function sendAllCachedData() {
+    for (let i = 0; i < localStorage.length; i++) {
+        const cacheKey = localStorage.key(i);
+        if (cacheKey.startsWith('unsavedData_')) {
+          //  console.log(`Отправляем кешированные данные для ключа: ${cacheKey}`);
+            await sendDataToServer(cacheKey);
+        }
+    }
+}
+
+// Обработчик кнопки для отправки кешированных данных
+document.getElementById('sendCacheButton').addEventListener('click', async () => {
+   // console.log('Пытаемся отправить все кешированные данные...');
+    await sendAllCachedData();
+});
+
+// Событие при потере интернета
+window.addEventListener('offline', () => {
+   // console.warn('Интернет пропал. Оценки будут сохранены в кеше.');
+});
+
+// Событие при восстановлении интернета
+window.addEventListener('online', () => {
+   // console.info('Интернет появился. Вы можете отправить кешированные данные.');
+});
+
 // Привязка события change к функции сохранения данных
 function attachInputListeners() {
     const textareas = document.querySelectorAll('textarea.data-input');
     textareas.forEach(textarea => {
         textarea.addEventListener('change', function () {
-            saveData(this.value, this.getAttribute('data-column'), this.getAttribute('data-row'), 'brickusDay2');
+            saveData(this.value, this.getAttribute('data-column'), this.getAttribute('data-row'), 'brickus');
         });
     });
 }
@@ -416,9 +483,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Остальной код для инициализации
     attachInputListeners();
 });
-
-    // Инициализация загрузки данных и отображение таблицы
-    renderData('brickusDay2');
+	
+	// Инициализация загрузки данных и отображение таблицы
+    renderData('brickus');
 
 
 });

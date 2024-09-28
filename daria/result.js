@@ -73,9 +73,16 @@ function createTableFromData(data, panelId) {
     $(panel).find('a.lightzoom').lightzoom({ speed: 400, overlayOpacity: 0.5 });
 }
 
+// Функция для получения ID таблицы через Google Apps Script
+async function getSheetId() {
+    const url = 'https://script.google.com/macros/s/AKfycbxemxyuf8cFQCnr1joWtAzRqhIyfeTCU2OU19RrWac57c0HuANTdNRb7i21iVEr9yNQ/exec';
+    const response = await fetch(url);
+    return response.text();
+}
+
 // Функция для загрузки данных из Google Sheets с кешированием
-async function fetchDataWithCache(sheetName = 'odangoRes', range = 'A1:L120') {
-    const SHEET_ID = '128bnCwot_ifFV_B5e1Zxi4VrMLIzGyV4X9iBe7JMJMk';
+async function fetchDataWithCache(sheetName = 'dariaRes', range = 'A1:L120') {
+    const SHEET_ID = await getSheetId(); // Получаем ID динамически
     const API_KEY = 'AIzaSyBj2W1tUafEz-lBa8CIwiILl28XlmAhyFM'; // Замените YOUR_API_KEY на ваш ключ API
     const CACHE_EXPIRY = 420000; // 7 минут в миллисекундах
     const cacheKey = `cachedData_${sheetName}_${range}`;
@@ -108,6 +115,7 @@ async function fetchDataWithCache(sheetName = 'odangoRes', range = 'A1:L120') {
     return data;
 }
 
+
 // Функция для рендеринга таблицы с данными
 async function renderTable() {
     const RANGE_PARTS = [
@@ -120,7 +128,7 @@ async function renderTable() {
     const parts = [];
     for (const range of RANGE_PARTS) {
         try {
-            const data = await fetchDataWithCache('odangoRes', range);
+            const data = await fetchDataWithCache('dariaRes', range);
             if (!data || !data.values) {
                 console.warn(`Нет данных для диапазона ${range}`);
                 continue;
@@ -163,7 +171,7 @@ function initializeAccordions() {
 
 
 // Функция для отображения данных
-async function renderData(sheetName = 'odangoRes') {
+async function renderData(sheetName = 'dariaRes') {
     try {
         // Рендеринг итоговой таблицы с данными
         await renderTable();
@@ -178,5 +186,5 @@ async function renderData(sheetName = 'odangoRes') {
 
 // Инициализация загрузки данных и отображение таблицы
 document.addEventListener('DOMContentLoaded', function() {
-    renderData('odangoRes');
+    renderData('dariaRes');
 });

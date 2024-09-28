@@ -31,9 +31,9 @@ function openCity(evt, cityName) {
 
 // Для заполнения расписания
 document.addEventListener('DOMContentLoaded', async function() {
-    const SHEET_ID = '1_p2Wb9MU6VCHkdM0ZZcj7Kjfg-LHK6h_qwdEKztXdds'; // ID гугл таблицы
+    const SHEET_ID = '1ib2932BhZqfIcAj2oBk_zETt9JYRbHVptvm9ThAVDiU'; // ID гугл таблицы
     const API_KEY = 'AIzaSyBj2W1tUafEz-lBa8CIwiILl28XlmAhyFM'; // API ключ для работы с таблицами
-    const RANGE = 'Day2!A1:B230'; // Имя страницы и диапазон ячеек
+    const RANGE = 'Day1!A1:B250'; // Имя страницы и диапазон ячеек
     const CACHE_EXPIRY = 420000; // 7 минут в миллисекундах
 
     const fetchDataWithCache = async () => {

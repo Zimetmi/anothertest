@@ -81,7 +81,7 @@ async function getSheetId() {
 }
 
 // Функция для загрузки данных из Google Sheets с кешированием
-async function fetchDataWithCache(sheetName = 'lisRes', range = 'A1:L120') {
+async function fetchDataWithCache(sheetName = 'NewRes', range = 'A1:G576') {
     const SHEET_ID = await getSheetId(); // Получаем ID динамически
     const API_KEY = 'AIzaSyBj2W1tUafEz-lBa8CIwiILl28XlmAhyFM'; // Замените YOUR_API_KEY на ваш ключ API
     const CACHE_EXPIRY = 420000; // 7 минут в миллисекундах
@@ -119,16 +119,16 @@ async function fetchDataWithCache(sheetName = 'lisRes', range = 'A1:L120') {
 // Функция для рендеринга таблицы с данными
 async function renderTable() {
     const RANGE_PARTS = [
-        'A1:H133', // Диапазон для первой части
-        'A135:H200', // Диапазон для второй части
-        'A202:H239', // Диапазон для третьей части
-        'A241:C800'  // Диапазон для четвертой части
+        'A1:G55', // Диапазон для первой части
+        'A57:G88', // Диапазон для второй части
+        'A90:G112', // Диапазон для третьей части
+        'A114:F576'  // Диапазон для четвертой части
     ];
 
     const parts = [];
     for (const range of RANGE_PARTS) {
         try {
-            const data = await fetchDataWithCache('lisRes', range);
+            const data = await fetchDataWithCache('NewRes', range);
             if (!data || !data.values) {
                 console.warn(`Нет данных для диапазона ${range}`);
                 continue;
@@ -171,7 +171,7 @@ function initializeAccordions() {
 
 
 // Функция для отображения данных
-async function renderData(sheetName = 'lisRes') {
+async function renderData(sheetName = 'NewRes') {
     try {
         // Рендеринг итоговой таблицы с данными
         await renderTable();
@@ -186,5 +186,5 @@ async function renderData(sheetName = 'lisRes') {
 
 // Инициализация загрузки данных и отображение таблицы
 document.addEventListener('DOMContentLoaded', function() {
-    renderData('lisRes');
+    renderData('NewRes');
 });

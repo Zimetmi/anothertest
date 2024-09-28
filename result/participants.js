@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Диапазоны для секций
-    const section1Range = [2, 35];
-    const section2Range = [36, 67];
-    const section3Range = [68, 119];
+    const section1Range = [2, 38];
+    const section2Range = [39, 84];
+    const section3Range = [85, 90];
 	
     // Функция для фильтрации участников по диапазону
     function filterParticipantsByRange(participants, range) {
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         select.addEventListener('input', function () {
-            saveData(select.value, dataColumn, dataRow, 'lis');
+            saveData(select.value, dataColumn, dataRow, 'brickus');
         });
 
         return select;
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     select.addEventListener('input', function () {
-        saveData(select.value, dataColumn, dataRow, 'lis');
+        saveData(select.value, dataColumn, dataRow, 'brickus');
     });
 
     return select;
@@ -103,9 +103,9 @@ function createCheckbox(id, dataColumn, dataRow, initialValue) {
 
     checkbox.addEventListener('change', function () {
         if (checkbox.checked) {
-            saveData('Номинант', dataColumn, dataRow, 'lis');
+            saveData('Номинант', dataColumn, dataRow, 'brickus');
         } else {
-            saveData('', dataColumn, dataRow, 'lis');
+            saveData('', dataColumn, dataRow, 'brickus');
         }
     });
 
@@ -159,7 +159,7 @@ function createInputFields(container, rowId, placeholders, options = []) {
     textarea.value = placeholders['comment'] || ''; // Инициализируем значение из placeholders
 
     textarea.addEventListener('input', debounce(function () {
-    saveData(this.value, 'F', rowId, 'lis');
+    saveData(this.value, 'F', rowId, 'brickus');
 	}, 300));  // Задержка 300 мс
 
     commentInputDiv.appendChild(textarea);
@@ -251,7 +251,7 @@ function createInputFields(container, rowId, placeholders, options = []) {
 	}
 
     // Функция для загрузки данных из Google Sheets с кешированием
-    async function fetchDataWithCache(sheetName = 'lis', includeParticipants = false) {
+    async function fetchDataWithCache(sheetName = 'brickus', includeParticipants = false) {
         const SHEET_ID = await getSheetId(); // Получаем ID динамически
         const API_KEY = 'AIzaSyCYgExuxs0Kme9-tWRCsz4gVD9yRjHY74g'; // Замените YOUR_API_KEY на ваш ключ API
         const RANGE = 'A1:L200';
@@ -316,7 +316,7 @@ function createInputFields(container, rowId, placeholders, options = []) {
 	}
 
     // Функция для отображения данных
-    async function renderData(sheetName = 'lis') {
+    async function renderData(sheetName = 'brickus') {
         const { data, participants } = await fetchDataWithCache(sheetName, true);
         
         const section1Container = document.getElementById('section1');
@@ -385,7 +385,7 @@ function createInputFields(container, rowId, placeholders, options = []) {
  
 
 // Функция для сохранения данных в кеш
-function saveData(value, column, row, sheetName = 'lis') {
+function saveData(value, column, row, sheetName = 'brickus') {
     const cacheKey = `unsavedData_${row}_${column}`;
     
     // Логируем данные, которые сохраняем в кеш
@@ -473,7 +473,7 @@ function attachInputListeners() {
     const textareas = document.querySelectorAll('textarea.data-input');
     textareas.forEach(textarea => {
         textarea.addEventListener('change', function () {
-            saveData(this.value, this.getAttribute('data-column'), this.getAttribute('data-row'), 'lis');
+            saveData(this.value, this.getAttribute('data-column'), this.getAttribute('data-row'), 'brickus');
         });
     });
 }
@@ -485,7 +485,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 	
 	// Инициализация загрузки данных и отображение таблицы
-    renderData('lis');
+    renderData('brickus');
 
 
 });

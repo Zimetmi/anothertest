@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Функции для работы с аккордеоном
     const section1Range = [1, 38];
     const section2Range = [39, 84];
-    const section3Range = [85, 103];
+    const section3Range = [85, 90];
 
     function filterParticipantsByRange(participants, range) {
         return participants.filter(participant => {
